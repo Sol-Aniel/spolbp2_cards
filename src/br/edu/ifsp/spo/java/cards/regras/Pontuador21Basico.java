@@ -1,17 +1,16 @@
-package br.edu.ifsp.spo.java.cards;
+package br.edu.ifsp.spo.java.cards.regras;
 
-import br.edu.ifsp.spo.java.cards.Carta;
-import br.edu.ifsp.spo.java.cards.Valor;
-import com.sun.source.tree.SwitchTree;
+import br.edu.ifsp.spo.java.cards.basico.Carta;
+import br.edu.ifsp.spo.java.cards.basico.Valor;
 
 import java.util.List;
 
-public class Pontuador {
+public class Pontuador21Basico implements Pontuador {
 
-    public Pontuador(){
+    public Pontuador21Basico(){
     }
 
-    public int verificarScore(List<Carta> cartas){
+    public int verificarPontuacao(List<Carta> cartas){
         int resultado = 0;
         int asCount = 0;
         for (int i = 0; i < cartas.size(); i++) {
@@ -68,4 +67,5 @@ public class Pontuador {
         String resultado = "";
         return resultado;
     }
+
 }
