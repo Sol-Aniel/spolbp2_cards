@@ -13,12 +13,14 @@ public class Pontuador {
 
     public int verificarScore(List<Carta> cartas){
         int resultado = 0;
+        int asCount = 0;
         for (int i = 0; i < cartas.size(); i++) {
             int valor = 0;
             Valor valoreal = cartas.get(i).getValor();
             switch (valoreal){
                 case AS:
                     valor = 1;
+                    asCount++;
                     break;
                 case DOIS:
                     valor = 2;
@@ -51,7 +53,12 @@ public class Pontuador {
                     valor = 10;
                     break;
             }
-            resultado = resultado + valor;
+            resultado += valor;
+        }
+        for (int i = 0; i < asCount; i++) {
+            if (resultado + 10 <= 21) {
+                resultado += 10;
+            }
         }
         return resultado;
     }
