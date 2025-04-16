@@ -1,4 +1,6 @@
-package br.edu.ifsp.spo.java.cards;
+package br.edu.ifsp.spo.java.cards.jogo;
+
+import br.edu.ifsp.spo.java.cards.basico.Carta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,10 @@ public class Jogador {
 
     public String getNome(){
         return nome;
+    }
+
+    public List<Carta> getMao(){
+        return mao;
     }
 
     @Override
