@@ -14,7 +14,7 @@ public class App {
         Baralho baralho = new Baralho();
         Jogo vinteUm = new Jogo(2, new Pontuador21Basico());
 
-        Carta carta = baralho.tirarCarta();
+
         
         System.out.println(carta);
 
