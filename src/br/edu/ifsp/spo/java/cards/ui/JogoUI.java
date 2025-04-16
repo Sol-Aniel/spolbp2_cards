@@ -32,6 +32,7 @@ public class JogoUI {
                 pontuadorSelecionado = new Pontuador21Basico();
                 System.out.println("Selecione um numero valido!");
         }
+        
         return pontuadorSelecionado;
     }
 }
