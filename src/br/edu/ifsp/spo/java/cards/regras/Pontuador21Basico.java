@@ -10,6 +10,7 @@ public class Pontuador21Basico implements Pontuador {
     public Pontuador21Basico(){
     }
 
+    @Override
     public int verificarPontuacao(List<Carta> cartas){
         int resultado = 0;
         int asCount = 0;

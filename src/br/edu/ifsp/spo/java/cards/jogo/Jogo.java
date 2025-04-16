@@ -12,14 +12,14 @@ public class Jogo {
 
     private JogoUI ui;
 
-    public Jogo(int tamanhoIncialdaMao, Pontuador pontuador){
+    public Jogo(int tamanhoIncialdaMao){
         this.ui = new JogoUI();
 
         this.baralho = new Baralho();
-        this.pontuador = pontuador;
 
         this.inicializarJogadores();
         this.distribuirMao(tamanhoIncialdaMao);
+        this.inicializarPontuador();
     }
 
     private void inicializarJogadores(){
@@ -35,6 +35,11 @@ public class Jogo {
             this.jogador1.receberCarta(this.baralho.tirarCarta());
             this.jogador2.receberCarta(this.baralho.tirarCarta());
         }
+    }
+
+    private void inicializarPontuador(){
+        Pontuador pontuadorSelecionado = this.ui.selecionarPontuador();
+        this.pontuador = pontuadorSelecionado;
     }
 
     @Override

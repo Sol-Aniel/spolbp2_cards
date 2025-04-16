@@ -12,7 +12,7 @@ public class App {
     public static void main(String[] args) {
 
         Baralho baralho = new Baralho();
-        Jogo vinteUm = new Jogo(2, new Pontuador21Basico());
+        Jogo vinteUm = new Jogo(2);
 
         Carta carta = baralho.tirarCarta();
         
