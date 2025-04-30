@@ -19,6 +19,13 @@ public class Jogador {
         this.mao.add(carta);
     }
 
+    public List<Carta> descartarMao(){
+        List<Carta> cartasDescartadas = new ArrayList<>(this.getMao());
+        this.mao.clear();
+
+        return cartasDescartadas;
+    }
+
     @Override
     public String toString() {
         String resultado = "\nJogador: " + this.nome;

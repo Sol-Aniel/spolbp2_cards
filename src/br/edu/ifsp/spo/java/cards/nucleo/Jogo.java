@@ -5,6 +5,8 @@ import br.edu.ifsp.spo.java.cards.itens.Baralho;
 import br.edu.ifsp.spo.java.cards.regras.Pontuador;
 import br.edu.ifsp.spo.java.cards.ui.JogoUI;
 
+import java.util.Optional;
+
 public class Jogo {
 
     private Baralho baralho;
@@ -38,8 +40,38 @@ public class Jogo {
         var pontuacaoJogador1 = this.pontuador.verificarPontuacao(this.jogador1.getMao());
         var pontuacaoJogador2 = this.pontuador.verificarPontuacao(this.jogador2.getMao());
 
+
+        var vencedor = obterVencedor(pontuacaoJogador1, pontuacaoJogador2);
+
+        if(vencedor.isPresent()){
+            this.ui.exibirVencedor(vencedor, this.pontuador.verificarPontuacao(vencedor.get().getMao()));
+        } else{
+            this.ui.exibirEmpate();
+
+        }
+
+    }
+
+    private Optional<Jogador> obterVencedor(int pontuacaoJogador1, int pontuacaoJogador2) {
         var partidaEmpata =
                 (pontuacaoJogador1 == pontuacaoJogador2);
+
+        Jogador vencedor;
+
+        if(partidaEmpata){
+            if (pontuacaoJogador1 == 21){
+                vencedor = this.jogador1;
+            } else if (pontuacaoJogador2 == 21) {
+                vencedor = this.jogador2;
+            } else if (pontuacaoJogador1 > pontuacaoJogador2) {
+                vencedor = this.jogador1;
+            }else{
+                vencedor = this.jogador2;
+            }
+        }else{
+            vencedor = null;
+        }
+        return Optional.of(vencedor);
     }
 
     public void rodadaDoJogador(Jogador jogador){

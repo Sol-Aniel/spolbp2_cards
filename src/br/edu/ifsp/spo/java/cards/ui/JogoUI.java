@@ -2,11 +2,13 @@ package br.edu.ifsp.spo.java.cards.ui;
 
 import br.edu.ifsp.spo.java.cards.itens.AcaoJogador;
 import br.edu.ifsp.spo.java.cards.itens.Carta;
+import br.edu.ifsp.spo.java.cards.nucleo.Jogador;
 import br.edu.ifsp.spo.java.cards.regras.Pontuador;
 import br.edu.ifsp.spo.java.cards.regras.PontuadorAsValeOnze;
 import br.edu.ifsp.spo.java.cards.regras.PontuadorClassico;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class JogoUI {
@@ -66,5 +68,14 @@ public class JogoUI {
 
     public void exibirDeQuemEAVez(String nome){
         System.out.println("Agora é a vez de: " + nome);
+    }
+
+    public void exibirVencedor(Optional<Jogador> vencedor, int pontuacao){
+        System.out.println("O vencedor(a) é: " + vencedor);
+        System.out.println("Sua pontuação foi: " + pontuacao);
+    }
+
+    public void exibirEmpate(){
+        System.out.println("Não houve vencedores pois houve empate");
     }
 }
