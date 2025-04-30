@@ -38,7 +38,8 @@ public class Jogo {
         var pontuacaoJogador1 = this.pontuador.verificarPontuacao(this.jogador1.getMao());
         var pontuacaoJogador2 = this.pontuador.verificarPontuacao(this.jogador2.getMao());
 
-        var partidaEmpata = 
+        var partidaEmpata =
+                (pontuacaoJogador1 == pontuacaoJogador2);
     }
 
     public void rodadaDoJogador(Jogador jogador){
