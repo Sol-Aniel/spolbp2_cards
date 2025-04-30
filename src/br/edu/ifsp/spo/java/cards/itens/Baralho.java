@@ -6,9 +6,12 @@ import java.util.List;
 
 public class Baralho {
     private final List<Carta> cartas;
+    
+    private final List<Carta> descarte;
 
     public Baralho() {
         this.cartas = new ArrayList<>();
+        this.descarte = new ArrayList<>();
 
         for (var suit : Naipe.values()) {
             for (var rank : Valor.values()) {
@@ -20,7 +23,11 @@ public class Baralho {
     }
 
     public Carta tirarCarta() {
-        return this.cartas.remove(0);
+        return this.cartas.removeFirst();
+    }
+    
+    public void receberDescarte(List<Carta> cartas){
+        this.descarte.addAll(cartas);
     }
 
     public int cartasRestantes() {

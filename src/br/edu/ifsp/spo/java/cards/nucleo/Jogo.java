@@ -58,11 +58,15 @@ public class Jogo {
 
         Jogador vencedor;
 
-        if(partidaEmpata){
-            if (pontuacaoJogador1 == 21){
+        if(!partidaEmpata) {
+            if (pontuacaoJogador1 == 21) {
                 vencedor = this.jogador1;
             } else if (pontuacaoJogador2 == 21) {
                 vencedor = this.jogador2;
+            } else if (pontuacaoJogador1 >21) {
+                vencedor = this.jogador2;
+            } else if (pontuacaoJogador2 > 21) {
+                vencedor = this.jogador1;
             } else if (pontuacaoJogador1 > pontuacaoJogador2) {
                 vencedor = this.jogador1;
             }else{
@@ -71,19 +75,23 @@ public class Jogo {
         }else{
             vencedor = null;
         }
-        return Optional.of(vencedor);
+        return Optional.ofNullable(vencedor);
     }
 
     public void rodadaDoJogador(Jogador jogador){
         AcaoJogador acao;
 
         do {
-            var pontuacao = this.pontuador.verificarPontuacao(this.jogador1.getMao());
+            var pontuacao = this.pontuador.verificarPontuacao(jogador.getMao());
             System.out.println("Exibir Cartas:");
-            this.ui.exibirDeQuemEAVez(this.jogador1.getNome());
-            this.ui.exibirMao(this.jogador1.getMao(), pontuacao);
+            this.ui.exibirDeQuemEAVez(jogador.getNome());
+            this.ui.exibirMao(jogador.getMao(), pontuacao);
 
-            acao = this.ui.escolherAcao();
+            if (jogador.getClass() == JogadorAI.class){
+                acao = ((JogadorAI)jogador).vouComprar(pontuacao);
+            }else {
+                acao = this.ui.escolherAcao();
+            }
 
             if (acao == AcaoJogador.COMPRAR) {
                 this.jogador1.receberCarta(this.baralho.tirarCarta());
