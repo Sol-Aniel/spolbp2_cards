@@ -35,4 +35,8 @@ public class Jogador {
     public List<Carta> getMao() {
         return this.mao;
     }
+
+    public String getNome() {
+        return this.nome;
+    }
 }

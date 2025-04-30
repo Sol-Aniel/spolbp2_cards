@@ -1,5 +1,6 @@
 package br.edu.ifsp.spo.java.cards.nucleo;
 
+import br.edu.ifsp.spo.java.cards.itens.AcaoJogador;
 import br.edu.ifsp.spo.java.cards.itens.Baralho;
 import br.edu.ifsp.spo.java.cards.regras.Pontuador;
 import br.edu.ifsp.spo.java.cards.ui.JogoUI;
@@ -27,6 +28,34 @@ public class Jogo {
             this.jogador1.receberCarta(this.baralho.tirarCarta());
             this.jogador2.receberCarta(this.baralho.tirarCarta());
         }
+    }
+
+    public void play(){
+
+        rodadaDoJogador(this.jogador1);
+        rodadaDoJogador(this.jogador2);
+
+        var pontuacaoJogador1 = this.pontuador.verificarPontuacao(this.jogador1.getMao());
+        var pontuacaoJogador2 = this.pontuador.verificarPontuacao(this.jogador2.getMao());
+
+        var partidaEmpata = 
+    }
+
+    public void rodadaDoJogador(Jogador jogador){
+        AcaoJogador acao;
+
+        do {
+            var pontuacao = this.pontuador.verificarPontuacao(this.jogador1.getMao());
+            System.out.println("Exibir Cartas:");
+            this.ui.exibirDeQuemEAVez(this.jogador1.getNome());
+            this.ui.exibirMao(this.jogador1.getMao(), pontuacao);
+
+            acao = this.ui.escolherAcao();
+
+            if (acao == AcaoJogador.COMPRAR) {
+                this.jogador1.receberCarta(this.baralho.tirarCarta());
+            }
+        } while(acao == AcaoJogador.COMPRAR);
     }
 
     @Override
