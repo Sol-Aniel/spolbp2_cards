@@ -2,6 +2,7 @@ package br.edu.ifsp.spo.java.cards.ui;
 
 import br.edu.ifsp.spo.java.cards.itens.AcaoDoJogador;
 import br.edu.ifsp.spo.java.cards.itens.Carta;
+import br.edu.ifsp.spo.java.cards.itens.TipoDeJogo;
 import br.edu.ifsp.spo.java.cards.nucleo.Jogador;
 import br.edu.ifsp.spo.java.cards.regras.Pontuador;
 import br.edu.ifsp.spo.java.cards.regras.PontuadorAsValeOnze;
@@ -17,6 +18,36 @@ public class JogoUI {
 
         Scanner sc = new Scanner(System.in);
         return sc.nextLine();
+    }
+
+    public int numeroDeRodadas() {
+        Scanner sc = new Scanner(System.in);
+        int number = sc.nextInt();
+
+        System.out.println("Escolha o número de rodadas (até 10):");
+        number = sc.nextInt();
+        if (number > 10 || number < 1){
+            return 10;
+        }
+        else{
+            return number;
+        }
+    }
+
+    public TipoDeJogo definirTipo () {
+        System.out.println("Escolha:");
+        System.out.println("(1) Para uma única rodada (Padrão)");
+        System.out.println("(2) Para partida \"de até 10 rodadas\"");
+
+        Scanner sc = new Scanner(System.in);
+        int type = sc.nextInt();
+
+        if(type != 2){
+            return TipoDeJogo.RODADA;
+        }
+        else{
+            return TipoDeJogo.PARTIDA;
+        }
     }
 
     public Pontuador escolherPontuador() {

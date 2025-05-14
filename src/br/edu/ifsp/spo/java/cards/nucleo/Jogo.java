@@ -1,11 +1,11 @@
 package br.edu.ifsp.spo.java.cards.nucleo;
 
-import br.edu.ifsp.spo.java.cards.itens.AcaoDoJogador;
-import br.edu.ifsp.spo.java.cards.itens.Baralho;
+import br.edu.ifsp.spo.java.cards.itens.*;
 import br.edu.ifsp.spo.java.cards.regras.Pontuador;
 import br.edu.ifsp.spo.java.cards.ui.JogoUI;
 
 import javax.swing.text.html.Option;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Jogo {
@@ -13,8 +13,12 @@ public class Jogo {
     private Baralho baralho;
     private Jogador jogador1;
     private Jogador jogador2;
+    private int PonParJogador1;
+    private int PonParJogador2;
 
     private Pontuador pontuador;
+    private TipoDeJogo tipoejogo;
+    private int numeroderodadas;
 
     private JogoUI ui;
 
@@ -25,19 +29,67 @@ public class Jogo {
 
         this.baralho = new Baralho();
         this.jogador1 = new Jogador(ui.solicitarNomeJogador(1));
+        this.PonParJogador1 = 0;
 //        this.jogador2 = new Jogador(ui.solicitarNomeJogador(2));
         this.jogador2 = new JogadorAI();
+        this.PonParJogador2 = 0;
 
         for(int i = 0; i < 2; i++){
             this.jogador1.receberCarta(this.baralho.tirarCarta());
             this.jogador2.receberCarta(this.baralho.tirarCarta());
+        }
+        this.tipoejogo = this.ui.definirTipo();
+        this.numeroderodadas = definirNumeroDeRodadas();
+    }
+
+    private int definirNumeroDeRodadas() {
+        if(this.tipoejogo == TipoDeJogo.PARTIDA){
+            return this.ui.numeroDeRodadas();
+        }else{
+            return 0;
         }
     }
 
     public void play(){
         Optional<Jogador> vencedor = Optional.empty();
 
-        while(vencedor.isEmpty()){
+        switch(this.tipoejogo){
+            case RODADA -> jogoRodada();
+            case PARTIDA -> jogoPartida();
+            default -> jogoRodada();
+        }
+    }
+
+    private void jogoPartida() {
+        Optional<Jogador> vencedorR = Optional.empty();
+        Optional<Jogador> vencedorP = Optional.empty();
+
+        while (vencedorP.isEmpty()) {
+
+            for(int i = 0; i < this.numeroderodadas; i++) {
+                ui.exibirInicioJogo();
+
+                executarRodada(this.jogador1);
+                executarRodada(this.jogador2);
+
+
+                vencedorR = this.verificarVencedor();
+
+                if (vencedorR.isPresent()) {
+                    ui.exibirVencedor(vencedorR.get());
+                } else {
+                    this.reiniciarRodada();
+                }
+
+                this.reiniciarRodada();
+            }
+        }
+    }
+
+    private void jogoRodada() {
+        Optional<Jogador> vencedor = Optional.empty();
+
+        while (vencedor.isEmpty()) {
             ui.exibirInicioJogo();
 
             executarRodada(this.jogador1);
@@ -46,9 +98,9 @@ public class Jogo {
 
             vencedor = this.verificarVencedor();
 
-            if(vencedor.isPresent()){
+            if (vencedor.isPresent()) {
                 ui.exibirVencedor(vencedor.get());
-            }else{
+            } else {
                 this.reiniciarRodada();
             }
         }
@@ -64,8 +116,10 @@ public class Jogo {
 
             if(jogador instanceof JogadorAI){
                 var ia = (JogadorAI) jogador;
+                var pontuacaoia = this.pontuador.verificarPontuacao(ia.getMao());
 
-                acao = ia.decidir(pontuacao);
+                ui.exibirMao(ia.getMao(), pontuacaoia);
+                acao = ia.decidir(pontuacaoia);
             }else{
                 ui.exibirMao(jogador.getMao(), pontuacao);
 
@@ -111,6 +165,38 @@ public class Jogo {
 
         this.jogador1.receberCarta(this.baralho.tirarCarta());
         this.jogador2.receberCarta(this.baralho.tirarCarta());
+    }
+
+    private Optional<Jogador> vencedorPartida(ResultadosPossiveis resultado1, ResultadosPossiveis resultado2, Boolean empate){
+        Optional<Jogador> vencedorP = Optional.empty();
+
+        switch (resultado1){
+            case MENOS -> this.PonParJogador1 += 21;
+            case ESTOURO:
+                switch(resultado2) {
+                    case MENOS -> this.PonParJogador1 -= 5;
+                    case ESTOURO -> this.PonParJogador1 -= this.pontuador.verificarPontuacao(this.jogador1.getMao()) - 21;
+                    case VINTEUM -> this.PonParJogador1 += 0;
+                }
+            case VINTEUM:
+                if (resultado2 == ResultadosPossiveis.VINTEUM) {
+                    this.PonParJogador1 += 30;
+                } else {
+                    this.PonParJogador1 += 21;
+                }
+        }
+
+        switch (resultado2){
+            case MENOS ->;
+            case ESTOURO ->;
+            case VINTEUM ->;
+        }
+
+        if(empate == Boolean.TRUE){
+
+        }
+
+        return vencedorP
     }
 
     @Override
