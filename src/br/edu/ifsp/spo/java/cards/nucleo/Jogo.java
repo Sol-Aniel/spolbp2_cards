@@ -1,10 +1,11 @@
 package br.edu.ifsp.spo.java.cards.nucleo;
 
-import br.edu.ifsp.spo.java.cards.itens.AcaoJogador;
+import br.edu.ifsp.spo.java.cards.itens.AcaoDoJogador;
 import br.edu.ifsp.spo.java.cards.itens.Baralho;
 import br.edu.ifsp.spo.java.cards.regras.Pontuador;
 import br.edu.ifsp.spo.java.cards.ui.JogoUI;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public class Jogo {
@@ -24,7 +25,8 @@ public class Jogo {
 
         this.baralho = new Baralho();
         this.jogador1 = new Jogador(ui.solicitarNomeJogador(1));
-        this.jogador2 = new Jogador(ui.solicitarNomeJogador(2));
+//        this.jogador2 = new Jogador(ui.solicitarNomeJogador(2));
+        this.jogador2 = new JogadorAI();
 
         for(int i = 0; i < 2; i++){
             this.jogador1.receberCarta(this.baralho.tirarCarta());
@@ -33,70 +35,82 @@ public class Jogo {
     }
 
     public void play(){
+        Optional<Jogador> vencedor = Optional.empty();
 
-        rodadaDoJogador(this.jogador1);
-        rodadaDoJogador(this.jogador2);
+        while(vencedor.isEmpty()){
+            ui.exibirInicioJogo();
 
-        var pontuacaoJogador1 = this.pontuador.verificarPontuacao(this.jogador1.getMao());
-        var pontuacaoJogador2 = this.pontuador.verificarPontuacao(this.jogador2.getMao());
+            executarRodada(this.jogador1);
+            executarRodada(this.jogador2);
 
 
-        var vencedor = obterVencedor(pontuacaoJogador1, pontuacaoJogador2);
+            vencedor = this.verificarVencedor();
 
-        if(vencedor.isPresent()){
-            this.ui.exibirVencedor(vencedor, this.pontuador.verificarPontuacao(vencedor.get().getMao()));
-        } else{
-            this.ui.exibirEmpate();
-
-        }
-
-    }
-
-    private Optional<Jogador> obterVencedor(int pontuacaoJogador1, int pontuacaoJogador2) {
-        var partidaEmpata =
-                (pontuacaoJogador1 == pontuacaoJogador2);
-
-        Jogador vencedor;
-
-        if(!partidaEmpata) {
-            if (pontuacaoJogador1 == 21) {
-                vencedor = this.jogador1;
-            } else if (pontuacaoJogador2 == 21) {
-                vencedor = this.jogador2;
-            } else if (pontuacaoJogador1 >21) {
-                vencedor = this.jogador2;
-            } else if (pontuacaoJogador2 > 21) {
-                vencedor = this.jogador1;
-            } else if (pontuacaoJogador1 > pontuacaoJogador2) {
-                vencedor = this.jogador1;
+            if(vencedor.isPresent()){
+                ui.exibirVencedor(vencedor.get());
             }else{
-                vencedor = this.jogador2;
+                this.reiniciarRodada();
             }
-        }else{
-            vencedor = null;
         }
-        return Optional.ofNullable(vencedor);
     }
 
-    public void rodadaDoJogador(Jogador jogador){
-        AcaoJogador acao;
+    private void executarRodada(Jogador jogador) {
+        ui.exibirInicioRodada(jogador.getNome());
+
+        AcaoDoJogador acao = AcaoDoJogador.PASSAR;
 
         do {
             var pontuacao = this.pontuador.verificarPontuacao(jogador.getMao());
-            System.out.println("Exibir Cartas:");
-            this.ui.exibirDeQuemEAVez(jogador.getNome());
-            this.ui.exibirMao(jogador.getMao(), pontuacao);
 
-            if (jogador.getClass() == JogadorAI.class){
-                acao = ((JogadorAI)jogador).vouComprar(pontuacao);
-            }else {
-                acao = this.ui.escolherAcao();
+            if(jogador instanceof JogadorAI){
+                var ia = (JogadorAI) jogador;
+
+                acao = ia.decidir(pontuacao);
+            }else{
+                ui.exibirMao(jogador.getMao(), pontuacao);
+
+                acao = ui.obterAcao();
             }
 
-            if (acao == AcaoJogador.COMPRAR) {
-                this.jogador1.receberCarta(this.baralho.tirarCarta());
-            }
-        } while(acao == AcaoJogador.COMPRAR);
+            if(acao == AcaoDoJogador.COMPRAR)
+                jogador.receberCarta(this.baralho.tirarCarta());
+
+        } while(acao == AcaoDoJogador.COMPRAR);
+
+        ui.exibirFimRodada(jogador.getNome());
+    }
+
+    private Optional<Jogador> verificarVencedor() {
+        var pontuacaoJogador1 = this.pontuador.verificarPontuacao(this.jogador1.getMao());
+        var pontuacaoJogador2 = this.pontuador.verificarPontuacao(this.jogador2.getMao());
+
+        var empate = (pontuacaoJogador1 > 21 && pontuacaoJogador2 > 21) || (pontuacaoJogador1 == pontuacaoJogador2);
+
+        Optional<Jogador> vencedor = Optional.empty();
+
+        if(!empate){
+            if(pontuacaoJogador1 > 21)
+                vencedor = Optional.of(this.jogador2);
+            else if(pontuacaoJogador2 > 21)
+                vencedor = Optional.of(this.jogador1);
+            else
+                vencedor = Optional.of(pontuacaoJogador1>pontuacaoJogador2? this.jogador1 : this.jogador2);
+        }else{
+            ui.exibirEmpate();
+        }
+
+        return vencedor;
+    }
+
+    private void reiniciarRodada() {
+        this.baralho.adicionarDescartes(this.jogador1.descartarMao());
+        this.baralho.adicionarDescartes(this.jogador2.descartarMao());
+
+        this.jogador1.receberCarta(this.baralho.tirarCarta());
+        this.jogador2.receberCarta(this.baralho.tirarCarta());
+
+        this.jogador1.receberCarta(this.baralho.tirarCarta());
+        this.jogador2.receberCarta(this.baralho.tirarCarta());
     }
 
     @Override

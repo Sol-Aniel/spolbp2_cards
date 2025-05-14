@@ -10,8 +10,9 @@ public class App {
 //        Carta carta1 = new Carta(Naipe.ESPADAS, Valor.AS);
 //        Carta carta2 = new Carta(Naipe.COPAS, Valor.DEZ);
 
-        var vinteUm = new Jogo();
+        Jogo vinteUm = new Jogo();
         vinteUm.play();
+//        System.out.println(vinteUm);
 
 //        Baralho baralho = new Baralho();
 //

@@ -1,6 +1,6 @@
 package br.edu.ifsp.spo.java.cards.itens;
 
-public enum AcaoJogador {
+public enum AcaoDoJogador {
     COMPRAR,
     PASSAR
 }

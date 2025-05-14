@@ -1,6 +1,6 @@
 package br.edu.ifsp.spo.java.cards.ui;
 
-import br.edu.ifsp.spo.java.cards.itens.AcaoJogador;
+import br.edu.ifsp.spo.java.cards.itens.AcaoDoJogador;
 import br.edu.ifsp.spo.java.cards.itens.Carta;
 import br.edu.ifsp.spo.java.cards.nucleo.Jogador;
 import br.edu.ifsp.spo.java.cards.regras.Pontuador;
@@ -8,7 +8,6 @@ import br.edu.ifsp.spo.java.cards.regras.PontuadorAsValeOnze;
 import br.edu.ifsp.spo.java.cards.regras.PontuadorClassico;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class JogoUI {
@@ -40,42 +39,49 @@ public class JogoUI {
         return pontuador;
     }
 
-    public AcaoJogador escolherAcao(){
-        System.out.println("O que você deseja fazer?");
-        System.out.println("(1) Para comprar uma carta");
-        System.out.println("(2) Para passar a vez");
-        System.out.println("Caso não for escolhido nenhum, se passará a vez");
+    public void exibirVencedor(Jogador jogador) {
 
-        Scanner sc = new Scanner(System.in);
+        System.out.println(jogador.getNome() + " venceu a partida!");
 
-        int selecao = sc.nextInt();
-
-        return switch (selecao){
-            case 1 -> AcaoJogador.COMPRAR;
-            case 2 -> AcaoJogador.PASSAR;
-            default -> AcaoJogador.PASSAR;
-        };
     }
 
-    public void exibirMao(List<Carta> mao, int pontuacao){
+    public void exibirInicioJogo() {
+        System.out.println("Iniciando a partida!!!!");
+    }
+
+    public void exibirInicioRodada(String nome) {
+
+        System.out.println("Agora é a vez de " + nome);
+
+    }
+
+    public AcaoDoJogador obterAcao() {
+        System.out.println("O que você deseja fazer?");
+
+        System.out.println("(1) Comprar uma carta");
+        System.out.println("(2) Manter a mão atual");
+
+        var scanner = new Scanner(System.in);
+        int opcao = scanner.nextInt();
+
+        return opcao == 1 ? AcaoDoJogador.COMPRAR : AcaoDoJogador.PASSAR;
+    }
+
+    public void exibirMao(List<Carta> mao, int pontuacao) {
+
         System.out.println("Sua mão atual é:");
-        for (var carta : mao){
+        for(var carta : mao){
             System.out.println(carta);
         }
 
-        System.out.println("E a sua pontuação é: " + pontuacao);
+        System.out.println("Sua pontuação atual é: " + pontuacao);
     }
 
-    public void exibirDeQuemEAVez(String nome){
-        System.out.println("Agora é a vez de: " + nome);
+    public void exibirFimRodada(String nome) {
+        System.out.println("Fim da rodada de " + nome);
     }
 
-    public void exibirVencedor(Optional<Jogador> vencedor, int pontuacao){
-        System.out.println("O vencedor(a) é: " + vencedor);
-        System.out.println("Sua pontuação foi: " + pontuacao);
-    }
-
-    public void exibirEmpate(){
-        System.out.println("Não houve vencedores pois houve empate");
+    public void exibirEmpate() {
+        System.out.println("Rodada empatada! Iniciando uma nova rodada...");
     }
 }
