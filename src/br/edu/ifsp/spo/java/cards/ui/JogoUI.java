@@ -72,8 +72,26 @@ public class JogoUI {
 
     public void exibirVencedor(Jogador jogador) {
 
-        System.out.println(jogador.getNome() + " venceu a partida!");
+        System.out.println(jogador.getNome() + " venceu a rodada!");
 
+    }
+
+    public void exibirVencedorPartida(Jogador jogador, int pontuacao1, int pontuacao2) {
+
+        int pontuacaoV;
+        int pontuacaoP;
+
+        if (pontuacao1 > pontuacao2){
+            pontuacaoV = pontuacao1;
+            pontuacaoP = pontuacao2;
+        } else {
+            pontuacaoV = pontuacao2;
+            pontuacaoP = pontuacao1;
+        }
+
+        System.out.println(jogador.getNome() + " venceu a Partida! Parabens!!!");
+        System.out.println("Sua pontuação total foi de: " + pontuacaoV);
+        System.out.println("A pontuação perdedora foi de: " + pontuacaoP);
     }
 
     public void exibirInicioJogo() {
