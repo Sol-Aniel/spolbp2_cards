@@ -1,25 +1,52 @@
 package br.edu.ifsp.spo.java.cards;
 
+import br.edu.ifsp.spo.java.cards.itens.Carta;
+import br.edu.ifsp.spo.java.cards.itens.Naipe;
+import br.edu.ifsp.spo.java.cards.itens.Valor;
 import br.edu.ifsp.spo.java.cards.nucleo.Jogo;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.MessageFormat;
 
 public class App {
 
     public static void main(String[] args) {
-//        Carta carta1 = new Carta(Naipe.ESPADAS, Valor.AS);
-//        Carta carta2 = new Carta(Naipe.COPAS, Valor.DEZ);
+        for (var naipe : Naipe.values()) {
+            for (var valor : Valor.values()) {
+                soltaTigrinho(naipe, valor);
+            }
+        }
+    }
 
-        Jogo vinteUm = new Jogo();
-        vinteUm.play();
-//        System.out.println(vinteUm);
+    private static void soltaTigrinho(Naipe naipe, Valor valor) {
+        var carta = new Carta(naipe, valor);
 
-//        Baralho baralho = new Baralho();
-//
-//        Carta carta = baralho.tirarCarta();
-//
-//        System.out.println(carta);
-//
-//        System.out.println(MessageFormat.format("Cartas restantes no baralho: {0}", baralho.cartasRestantes()));
+        var caminhoCompleto = String.format(
+                "%s/%s/%s.txt",
+                "/cards",
+                carta.getNaipe().toString().toLowerCase(),
+                carta.getValor().toString().toLowerCase());
+
+        System.out.println(caminhoCompleto);
+
+        try{
+            InputStream inputStream = App.class.getResourceAsStream(caminhoCompleto);
+
+            if(inputStream == null){
+                System.out.println("O arquivo não existe");
+            }else {
+                byte[] buffer = new byte[inputStream.available()];
+                inputStream.read(buffer);
+
+                var cartaComoString = new String(buffer);
+                System.out.println(cartaComoString);
+            }
+
+        } catch (IOException exception){
+            System.out.println(exception.getMessage());
+        } catch (Exception exception){
+            System.out.println("Exception: " +exception.getMessage() + exception.getClass().getName());
+        }
     }
 }
