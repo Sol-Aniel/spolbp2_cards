@@ -20,7 +20,7 @@ public class App {
     private static void soltaTigrinho() {
 //        var carta = new Carta(naipe, valor);
         var cartas = new Baralho();
-        var grupinho = new ArrayList<Carta>(Arrays.asList());
+        var grupinho = new ArrayList<Carta>(Arrays.asList());             
         for(int i = 0; i<=5; i++) {
             if (i == 5 || cartas.isEmpty()) {
                 tigrinhos(grupinho);
