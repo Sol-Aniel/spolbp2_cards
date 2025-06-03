@@ -45,4 +45,10 @@ public class Baralho {
     public List<Carta> getCards() {
         return cartas;
     }
+
+    public boolean isEmpty() {
+        if(this.cartas.isEmpty()){
+            return true;
+        }else{return false;}
+    }
 }

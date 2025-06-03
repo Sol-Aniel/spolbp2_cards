@@ -1,5 +1,6 @@
 package br.edu.ifsp.spo.java.cards;
 
+import br.edu.ifsp.spo.java.cards.itens.Baralho;
 import br.edu.ifsp.spo.java.cards.itens.Carta;
 import br.edu.ifsp.spo.java.cards.itens.Naipe;
 import br.edu.ifsp.spo.java.cards.itens.Valor;
@@ -18,13 +19,8 @@ public class App {
 
     private static void soltaTigrinho() {
 //        var carta = new Carta(naipe, valor);
-        var cartas = new ArrayList<Carta>(Arrays.asList());
+        var cartas = new Baralho();
         var grupinho = new ArrayList<Carta>(Arrays.asList());
-        for (var suit : Naipe.values()) {
-            for (var rank : Valor.values()) {
-                cartas.add(new Carta(suit, rank));
-            }
-        }
         for(int i = 0; i<=5; i++) {
             if (i == 5 || cartas.isEmpty()) {
                 tigrinhos(grupinho);
@@ -35,7 +31,7 @@ public class App {
                     break;
                 }
             }else{
-                grupinho.add(cartas.removeFirst());
+                grupinho.add(cartas.tirarCarta());
             }
         }
     }
