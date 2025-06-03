@@ -26,11 +26,16 @@ public class App {
             }
         }
         for(int i = 0; i<=5; i++) {
-            grupinho.add(cartas.removeFirst());
-            if (i == 5 || cartas == null) {
+            if (i == 5 || cartas.isEmpty()) {
                 tigrinhos(grupinho);
                 grupinho.clear();
-                i = 0;
+                if (!cartas.isEmpty()){
+                    i = -1;
+                }else{
+                    break;
+                }
+            }else{
+                grupinho.add(cartas.removeFirst());
             }
         }
     }
