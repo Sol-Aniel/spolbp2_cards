@@ -13,14 +13,21 @@ import java.util.Arrays;
 
 public class App {
 
+    private static final String cardOffset = "      ";
+
     public static void main(String[] args) {
         soltaTigrinho();
     }
 
     private static void soltaTigrinho() {
 //        var carta = new Carta(naipe, valor);
-        var cartas = new Baralho();
-        var grupinho = new ArrayList<Carta>(Arrays.asList());             
+        var cartas = new ArrayList<Carta>(Arrays.asList());
+        var grupinho = new ArrayList<Carta>(Arrays.asList());
+        for (var suit : Naipe.values()) {
+            for (var rank : Valor.values()) {
+                cartas.add(new Carta(suit, rank));
+            }
+        }
         for(int i = 0; i<=5; i++) {
             if (i == 5 || cartas.isEmpty()) {
                 tigrinhos(grupinho);
@@ -31,13 +38,12 @@ public class App {
                     break;
                 }
             }else{
-                grupinho.add(cartas.tirarCarta());
+                grupinho.add(cartas.removeFirst());
             }
         }
     }
 
     private static void tigrinhos(ArrayList<Carta> cartas) {
-        var cardOffset = "      ";
 
         var linhas = new String[8];
         var linhaAtual = -1;
@@ -49,12 +55,13 @@ public class App {
                     carta.getNaipe().toString().toLowerCase(),
                     carta.getValor().toString().toLowerCase());
 
-        System.out.println(caminhoCompleto);
-
         try(BufferedReader reader = new BufferedReader(
                 new InputStreamReader(App.class.getResourceAsStream(caminhoCompleto)))){
 
             String linha;
+
+//            var numeroLinhas = 0;
+
             while((linha = reader.readLine()) != null) {
                 linhaAtual++;
 
@@ -65,15 +72,6 @@ public class App {
                 }
             }
             linhaAtual = -1;
-//            if(inputStream == null){
-//                System.out.println("O arquivo não existe");
-//            }else {
-//                byte[] buffer = new byte[inputStream.available()];
-//                inputStream.read(buffer);
-//
-//                var cartaComoString = new String(buffer);
-//                System.out.println(cartaComoString);
-//            }
 
         } catch (IOException exception){
             System.out.println(exception.getMessage());
