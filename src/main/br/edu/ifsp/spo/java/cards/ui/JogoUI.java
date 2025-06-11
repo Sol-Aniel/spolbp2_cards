@@ -21,11 +21,10 @@ public class JogoUI {
     }
 
     public int numeroDeRodadas() {
+        System.out.println("Escolha o número de rodadas (até 10):");
         Scanner sc = new Scanner(System.in);
         int number = sc.nextInt();
 
-        System.out.println("Escolha o número de rodadas (até 10):");
-        number = sc.nextInt();
         if (number > 10 || number < 1){
             return 10;
         }
@@ -117,11 +116,9 @@ public class JogoUI {
     }
 
     public void exibirMao(List<Carta> mao, int pontuacao) {
-
+        Midia midia = new Midia();
         System.out.println("Sua mão atual é:");
-        for(var carta : mao){
-            System.out.println(carta);
-        }
+        midia.carregarCartas(mao);
 
         System.out.println("Sua pontuação atual é: " + pontuacao);
     }

@@ -22,7 +22,13 @@ public class Baralho {
     }
 
     public Carta tirarCarta() {
-        return this.cartas.remove(0);
+        if (this.cartas.isEmpty()){
+            this.cartas.addAll(this.descartes);
+            this.descartes.clear();
+            return this.cartas.removeFirst();
+        }else{
+            return this.cartas.removeFirst();
+        }
     }
 
     public int cartasRestantes() {

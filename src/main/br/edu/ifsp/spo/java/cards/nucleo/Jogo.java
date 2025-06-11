@@ -61,9 +61,9 @@ public class Jogo {
 
         this.numeroderodadas = ui.numeroDeRodadas();
 
+        ui.exibirInicioJogo();
         while (vencedorP.isEmpty()) {
             for(int i = 0; i < this.numeroderodadas; i++) {
-                ui.exibirInicioJogo();
 
                 executarRodada(this.jogador1);
                 executarRodada(this.jogador2);
@@ -129,7 +129,7 @@ public class Jogo {
     private void executarRodada(Jogador jogador) {
         ui.exibirInicioRodada(jogador.getNome());
 
-        AcaoDoJogador acao = AcaoDoJogador.PASSAR;
+        AcaoDoJogador acao;
 
         do {
             var pontuacao = this.pontuador.verificarPontuacao(jogador.getMao());
